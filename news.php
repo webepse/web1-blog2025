@@ -1,10 +1,10 @@
 <?php
     // j'ai besoin de l'id (en GET) pour fonctionner
     // savoir si GET['id'] existe => isset
-    if(isset($_GET['id']))
+    if(isset($_GET['id']) AND is_numeric($_GET['id']))
     {
         // protèger la valeur de id pcq ça vient de l'extérieur (URL)
-        $id = htmlspecialchars($_GET['id']);
+        $id = htmlspecialchars($_GET['id']); 
     }else{
         // redirection vers index.php car il n'y a pas de GET['id']
         header("LOCATION:index.php");
@@ -15,7 +15,7 @@
     require "connexion.php";
 
     // req à la bdd mais avec une inconnue (qui? id)
-    $req = $bdd->prepare("SELECT titre,contenu, DATE_FORMAT(date, '%d/%m/%Y %Hh%i')as mydate FROM news WHERE id=?");
+    $req = $bdd->prepare("SELECT titre,contenu, DATE_FORMAT(date, '%d/%m/%Y %Hh%i') as mydate FROM news WHERE id=?");
     $req->execute([$id]);
     $don = $req->fetch(PDO::FETCH_ASSOC);
     $req->closeCursor();
