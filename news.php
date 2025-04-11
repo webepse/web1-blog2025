@@ -15,15 +15,21 @@
     require "connexion.php";
 
     // req à la bdd mais avec une inconnue (qui? id)
-    $req = $bdd->prepare("SELECT * FROM news WHERE id=?");
+    $req = $bdd->prepare("SELECT titre,contenu, DATE_FORMAT(date, '%d/%m/%Y %Hh%i')as mydate FROM news WHERE id=?");
     $req->execute([$id]);
     $don = $req->fetch(PDO::FETCH_ASSOC);
     $req->closeCursor();
+    // vérifier si $don à une valeur
+    if(!$don)
+    {
+        // condition qu'il n'y a pas de valeur à $don
+        // redirection vers une page not found ou page d'accueil
+        header("LOCATION:index.php");
+        exit();
+    }
+    
 
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -36,12 +42,10 @@
     <?php
         include("partials/header.php");
     ?>
-    <?php
-        echo "<h2>".$don['titre']."</h2>";
-    ?>
+    <?php echo "<h2>".$don['titre']."</h2>"; ?>
     <!-- mode plus simple d'écriture (echo) avec raccourci -->
     <h2><?= $don['titre'] ?></h2>
-    <h4><?= $don['date'] ?></h4>
+    <h4><?= $don['mydate'] ?></h4>
     <div>
         <?= nl2br($don['contenu']) ?>
     </div>
