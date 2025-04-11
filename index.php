@@ -16,7 +16,10 @@
         //    require_once "connexion.php";
         require "connexion.php";
         $req = $bdd->query("SELECT * FROM news");
-        while($don = $req->fetch())
+        // par défaut fetch => fetch(PDO::FETCH_BOTH) retourne un tableau associatif + numérique (indice)
+        // fetch(PDO::FETCH_NUM) retourne un tableau numérique (indice) => $don[1]
+        // fetch(PDO::FETCH_ASSOC) retourne un tableau associatif => $don['champs'] 
+        while($don = $req->fetch(PDO::FETCH_ASSOC))
         {
             var_dump($don);
         }
