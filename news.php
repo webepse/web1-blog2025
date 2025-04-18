@@ -15,7 +15,7 @@
     require "connexion.php";
 
     // req à la bdd mais avec une inconnue (qui? id)
-    $req = $bdd->prepare("SELECT titre,contenu, DATE_FORMAT(date, '%d/%m/%Y %Hh%i') as mydate FROM news WHERE id=?");
+    $req = $bdd->prepare("SELECT titre,contenu, cover, DATE_FORMAT(date, '%d/%m/%Y %Hh%i') as mydate FROM news WHERE id=?");
     $req->execute([$id]);
     $don = $req->fetch(PDO::FETCH_ASSOC);
     $req->closeCursor();
@@ -45,6 +45,7 @@
     <?php echo "<h2>".$don['titre']."</h2>"; ?>
     <!-- mode plus simple d'écriture (echo) avec raccourci -->
     <h2><?= $don['titre'] ?></h2>
+    <img src="images/<?= $don['cover'] ?>" alt="image de <?= $don['titre'] ?>">
     <h4><?= $don['mydate'] ?></h4>
     <div>
         <?= nl2br($don['contenu']) ?>
